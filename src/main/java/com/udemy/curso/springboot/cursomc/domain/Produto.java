@@ -1,5 +1,6 @@
 package com.udemy.curso.springboot.cursomc.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,8 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-public class Produto {
+public class Produto implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +28,7 @@ public class Produto {
 	
 	private double preco;
 	
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name = "Produto_Categoria",
 	joinColumns = @JoinColumn(name="produto_id"),
@@ -68,6 +74,7 @@ public class Produto {
 		this.preco = preco;
 	}
 	
+	@JsonIgnore
 	public List<Categoria> getCategorias() {
 		return categorias;
 	}
