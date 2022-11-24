@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.udemy.curso.springboot.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -33,10 +34,13 @@ public class Cliente implements Serializable {
 	
 	private Integer tipo; //  para o caso do ENUM vide construtores e acessores
 	
+	//@JsonManagedReference
 	@OneToMany (mappedBy = "cliente")
 	private List <Endereco> enderecos = new ArrayList<>();
 	
-	@OneToMany (mappedBy = "pedido")
+	//@JsonBackRefernce
+	@JsonIgnore
+	@OneToMany (mappedBy = "cliente")
 	private List <Pedido> pedidos = new ArrayList<>();
 	
 	

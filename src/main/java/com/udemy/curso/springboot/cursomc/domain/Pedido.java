@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,39 +13,49 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Pedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// Pagamentos pois o id é o mesmo para ambas
 	private Integer id;
-	
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date instante;
 	
-	@ManyToOne
-	@JoinColumn (name = "cliente_id")
-	private Cliente cliente;
-	
-	@OneToOne
+//	@JsonManagedReference
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
-	
-	//Construtores
+
+//	@JsonManagedReference
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
+
+	@ManyToOne
+	@JoinColumn(name="endereco_de_entrega_id")
+	private Endereco enderecoDeEntrega;
+
+	// Construtores
 
 	public Pedido() {
 		super();
 	}
 
-	public Pedido(Integer id, Date instante, Cliente cliente, Pagamento pagamento) {
+	public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega) {
 		super();
 		this.id = id;
 		this.instante = instante;
 		this.cliente = cliente;
-		this.pagamento = pagamento;
+		this.setEnderecoDeEntrega(enderecoDeEntrega);
 	}
 
-	//Associações
-	
+	// Associações
+
 	public Integer getId() {
 		return id;
 	}
@@ -77,6 +88,14 @@ public class Pedido implements Serializable {
 		this.pagamento = pagamento;
 	}
 
+	public Endereco getEnderecoDeEntrega() {
+		return enderecoDeEntrega;
+	}
+
+	public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
+		this.enderecoDeEntrega = enderecoDeEntrega;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -93,9 +112,5 @@ public class Pedido implements Serializable {
 		Pedido other = (Pedido) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
-	
 
 }
