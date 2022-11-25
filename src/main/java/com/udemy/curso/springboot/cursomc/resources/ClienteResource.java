@@ -17,6 +17,7 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService clienteService;
 
+	// Médodo GET - devolve um cliente de acordo com o id solicitado
 	@GetMapping("/{id}")
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Cliente obj = clienteService.find(id);

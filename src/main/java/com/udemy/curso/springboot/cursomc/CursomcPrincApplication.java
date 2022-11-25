@@ -33,9 +33,12 @@ import com.udemy.curso.springboot.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class CursomcPrincApplication implements CommandLineRunner {
+	// a implementação CommandLineRunner faz com que o projeto já comece com alguns
+	// dados no banco
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	// Como o repository grava no banco adicionamos ele
 
 	@Autowired
 	private ProdutoRepository produtoRepository;

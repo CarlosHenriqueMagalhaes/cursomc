@@ -20,6 +20,10 @@ public class PedidoService {
 		Optional<Pedido> obj = pedidoRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
+		// Retorna mensagem/ lança uma exceção quando o Id não for existir,
+		// foi criado uma classe para esse método: ObjectNotFoundException
+		// Além disso temos que mudar na camada de recurso para ela receber essa
+		// exceção, go to PedidoResource
 	}
 
 }

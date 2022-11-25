@@ -17,6 +17,7 @@ public class PedidoResource {
 	@Autowired
 	private PedidoService pedidoService;
 
+	// Médodo GET - devolve um pedido de acordo com o id solicitado
 	@GetMapping("/{id}")
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		Pedido obj = pedidoService.find(id);

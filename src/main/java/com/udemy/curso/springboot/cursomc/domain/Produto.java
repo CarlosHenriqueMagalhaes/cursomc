@@ -30,12 +30,23 @@ public class Produto implements Serializable {
 
 	private double preco;
 
+	// do "outro lado" já busca os objetos, então eu não busco mais
 //	@JsonBackReference
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "Produto_Categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias = new ArrayList<>();
+	//Explicando cada etapa do código acima:
+	//@JoinTable(name = "Produto_Categoria",// define qual vai ser a tabela que vai fazer o muitos para muitos no banco
+	// de dados relacional e o nome da terceira tabela)
+	//joinColumns = @JoinColumn(name = "produto_id"), // nome do campo de chave estrangeira para código do produto
+	// na "terceira"tabela
+	//inverseJoinColumns = @JoinColumn(name = "categoria_id")) // nome do campo chave estrangeira para categoria na
+	//"terceira tabela
+	// não incluimos construtor para coleções ou seja categoria
 	
+	// O Set garante que a própria linguagem Java nos ajude de não ter
+	// item repetido no mesmo pedido
 	@JsonIgnore
 	@OneToMany (mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();

@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	// estou definindo a geração automatica dos Ids das minhas
+	// categorias (usado no H2 e outros)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

@@ -1,5 +1,7 @@
 package com.udemy.curso.springboot.cursomc.domain.enums;
 
+//Essa implementação do tipo enumerado garante controle total do código atribuído a cada valor da enumeração
+//No caso o da PESSOA FISICA e da PESSOAJURIDICA
 public enum TipoCliente {
 
 	PESSOAFISICA(1, "Pessoa Física"), PESSOAJURIDICA(2, "Pessoa Jurídica");
@@ -15,7 +17,8 @@ public enum TipoCliente {
 	}
 
 	// Acessores apenas get para ENUMS
-
+	
+	//nos Enuns não fazemos setters os valores são imutaveis
 	public int getCod() {
 		return cod;
 	}

@@ -23,6 +23,7 @@ public class PagamentoComBoleto extends Pagamento {
 		super();
 	}
 
+	// Adicionamos os construtores da superclass
 	public PagamentoComBoleto(Integer id, EstadoPagamento estado, Pedido pedido, Date dataVencimento,
 			Date dataPagamento) {
 		super(id, estado, pedido);

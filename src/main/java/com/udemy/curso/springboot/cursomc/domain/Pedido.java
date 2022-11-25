@@ -22,9 +22,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Pedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	// Aqui é gerado automaticamente o Id, não colocamos na classe
+	// Pagamentos pois o id é o mesmo para ambas
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// Pagamentos pois o id é o mesmo para ambas
 	private Integer id;
 
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -43,6 +44,8 @@ public class Pedido implements Serializable {
 	@JoinColumn(name="endereco_de_entrega_id")
 	private Endereco enderecoDeEntrega;
 	
+	// O Set garante que a própria linguagem Java nos ajude de não ter
+	// item repetido no mesmo pedido
 	@OneToMany (mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
 

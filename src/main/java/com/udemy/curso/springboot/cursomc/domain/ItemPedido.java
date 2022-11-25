@@ -28,8 +28,7 @@ public class ItemPedido implements Serializable {
 		super();
 	}
 
-	// public ItemPedido(ItemPedidoPK id, double desconto, Integer quantidade,
-	// double preco) {
+	// public ItemPedido(ItemPedidoPK id, double desconto, Integer quantidade, double preco) {
 	public ItemPedido(Pedido pedido, Produto produto, double desconto, Integer quantidade, double preco) {
 		super();
 		// this.id = id;

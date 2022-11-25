@@ -22,6 +22,7 @@ public abstract class Pagamento implements Serializable {
 	@Id
 	private Integer id;
 
+	// quando é um para um o Id é o mesmo de pedido e pagamento (@OneToOne)
     //@JsonBackReference
 	@JsonIgnore
 	@OneToOne
@@ -72,6 +73,7 @@ public abstract class Pagamento implements Serializable {
 		this.pedido = pedido;
 	}
 
+	// as subclasses não precisam do hashCode equals, pois o id esta aqui!!
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

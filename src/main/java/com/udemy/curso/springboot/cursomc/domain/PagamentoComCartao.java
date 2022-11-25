@@ -16,6 +16,8 @@ public class PagamentoComCartao extends Pagamento {
 		super();
 	}
 
+	// Adicionamos os construtores da superclass e o construtor dessa classe no
+	// mesmo corpo:
 	public PagamentoComCartao(Integer id, EstadoPagamento estado, Pedido pedido,Integer numeroDeParcelas) {
 		super(id, estado, pedido);
 		this.numeroDeParcelas = numeroDeParcelas;

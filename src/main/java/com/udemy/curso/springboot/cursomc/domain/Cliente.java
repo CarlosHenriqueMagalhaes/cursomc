@@ -39,12 +39,12 @@ public class Cliente implements Serializable {
 	private List <Endereco> enderecos = new ArrayList<>();
 	
 	//@JsonBackRefernce
-	@JsonIgnore//
+	@JsonIgnore
 	@OneToMany (mappedBy = "cliente")
 	private List <Pedido> pedidos = new ArrayList<>();
 	
 	
-	//Telefone é uma classe fraca, por isso esta aqui!
+	//Telefone é uma entidade/classe fraca, por isso esta aqui!
 	
 	@ElementCollection
 	@CollectionTable (name = "TELEFONE")
