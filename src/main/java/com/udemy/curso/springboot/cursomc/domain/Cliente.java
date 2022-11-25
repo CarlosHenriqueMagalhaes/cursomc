@@ -39,7 +39,7 @@ public class Cliente implements Serializable {
 	private List <Endereco> enderecos = new ArrayList<>();
 	
 	//@JsonBackRefernce
-	@JsonIgnore
+	@JsonIgnore//
 	@OneToMany (mappedBy = "cliente")
 	private List <Pedido> pedidos = new ArrayList<>();
 	
