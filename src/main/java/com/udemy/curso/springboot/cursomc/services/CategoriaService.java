@@ -3,10 +3,12 @@ package com.udemy.curso.springboot.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.udemy.curso.springboot.cursomc.domain.Categoria;
 import com.udemy.curso.springboot.cursomc.repositories.CategoriaRepository;
+import com.udemy.curso.springboot.cursomc.services.exceptions.DataIntegrityException;
 import com.udemy.curso.springboot.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -46,6 +48,26 @@ public class CategoriaService {
 		//banco e caso o Id não exista ele lança uma exceção
 		//esse métod esta no GET acima, só aproveitei ele!
 		return categoriaRepository.save(obj);
+	}
+	
+	//Método para deletar uma Categoria, o Delete no EndPoint
+	
+	
+	public void delete(Integer id) {
+		find(id);
+		//Essa excecao (DataIntegrityViolationException) foi vista ao 
+		//relizar no postman um delete com uma categoria que ja possuia produtos
+		//tratamos ela com o try catch!
+		try {
+	categoriaRepository.deleteById(id);// o return comum
+	}
+		catch(DataIntegrityViolationException e){ 
+		throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos!");
+		//vai lançar minha exception DataIntegrityException 
+		//(foi criado no pacote com.udemy.curso.springboot.cursomc.services.exceptions)
+		//Feito isso temos que lançar na camada no ResourceExceptionHandler
+	}
+		
 	}
 
 }
