@@ -19,7 +19,7 @@ public class ClienteResource {
 
 	// Médodo GET - devolve um cliente de acordo com o id solicitado
 	@GetMapping("/{id}")
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 		Cliente obj = clienteService.find(id);
 		return ResponseEntity.ok().body(obj);
 	}

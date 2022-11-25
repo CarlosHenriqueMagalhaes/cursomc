@@ -19,7 +19,7 @@ public class PedidoResource {
 
 	// Médodo GET - devolve um pedido de acordo com o id solicitado
 	@GetMapping("/{id}")
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
 		Pedido obj = pedidoService.find(id);
 		return ResponseEntity.ok().body(obj);
 	}

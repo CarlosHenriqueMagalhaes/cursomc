@@ -16,6 +16,7 @@ public class CategoriaService {
 	private CategoriaRepository categoriaRepository;
 
 	// buscar para o ID (GET do controller)
+	
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = categoriaRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -26,11 +27,24 @@ public class CategoriaService {
 		// exceção, go to CategoriaResource
 	}
 	
-	//Método para salvar um novo objeto na Categoria, o POST e seu EndPoint.
+	//Método para salvar um novo objeto na Categoria, o POST no EndPoint.
+	
 	public Categoria insert (Categoria obj) {
 		obj.setId(null);
 		//é null pois ele vai "buscar o primeiro id nulo para setar
 		//sem o null vai ser considerado uma atualização e não uma inserção
+		return categoriaRepository.save(obj);
+	}
+	
+	//Método para alterar um objeto na Categoria, o PUT no EndPoint
+	
+	//O mesmo método de inserir/salvar, a diferença é  a ausencia 
+	//da linha "obj.setId(null); 
+	public Categoria update(Categoria obj) {
+		find(obj.getId());
+		//chamo find porque ele ja busca o objeto no
+		//banco e caso o Id não exista ele lança uma exceção
+		//esse métod esta no GET acima, só aproveitei ele!
 		return categoriaRepository.save(obj);
 	}
 
