@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.udemy.curso.springboot.cursomc.domain.Categoria;
+import com.udemy.curso.springboot.cursomc.dto.CategoriaDTO;
 import com.udemy.curso.springboot.cursomc.repositories.CategoriaRepository;
 import com.udemy.curso.springboot.cursomc.services.exceptions.DataIntegrityException;
 import com.udemy.curso.springboot.cursomc.services.exceptions.ObjectNotFoundException;
@@ -91,5 +92,16 @@ public class CategoriaService {
     PageRequest pageRequest = PageRequest.of (page, linesPerPage,Direction.valueOf(direction),orderBy);
     return categoriaRepository.findAll(pageRequest);
 }
+	
+	//Método para transformar Classe em DTO
+	
+	//Foi feito junto ao endpoint POST e PUT com DTO na classe CategoriaResourse
+	//A partir de um DTO vou construir um obj Categoria
+	//Esse é um método auxiliar que instancia uma categoria a partir de
+	//um DTO
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(),objDto.getNome());
+	}
 
 }

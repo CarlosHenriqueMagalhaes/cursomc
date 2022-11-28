@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -39,29 +41,51 @@ public class CategoriaResource {
 	
 	// Médodo POST - insere uma nova Categoria em um novo Id!
 	
-	//Lembrando que o Método para salvar fica na classe CategoriaService:
-	//O @RequestBody faz o Json ser convertido para o objeto java automáticamente
-	//(sem ele o retornava null o nome inserido no postman)
-	//@RequestMapping(method=RequestMethod.POST)
+//	//Lembrando que o Método para salvar fica na classe CategoriaService:
+//	//O @RequestBody faz o Json ser convertido para o objeto java automáticamente
+//	//(sem ele o retornava null o nome inserido no postman)
+//	//@RequestMapping(method=RequestMethod.POST)
+//	@PostMapping
+//	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+//		obj = categoriaService.insert(obj);// essa linha garande que sera salvo o próximo id disponivel na Categoria
+//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+//		//URI é o campo local host http://localhost:8099/categorias
+//		//fromCurrentRequest() pega a URL que usamos para inserir nesse caso http://localhost:8099/categorias
+//		//.path("/{id}" para o id a ser criado
+//		//.buildAndExpand(obj.getId()) para atribuir o valor para ele
+//		//.toUri() para converter para URI
+//		//no return usamos o .created pois ele retorna o "201" que é o correto para essa aplicação
+//		//basta pesquisar http status code que veremos uma lista com todos os códigos adequados
+//		return ResponseEntity.created(uri).build();
+//	}
+	
+	//Com a mudança para o uso do DTO nosso código ficou assim:
+	
+	//Adicionamos o @Valid para validação conforme abaixo:
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
-		obj = categoriaService.insert(obj);// essa linha garande que sera salvo o próximo id disponivel na Categoria
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {//para converter esse objDto fazemos 
+		//o método na classe CategoriaService e o cod abaixo:
+		Categoria obj = categoriaService.fromDTO(objDto);
+		obj = categoriaService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		//URI é o campo local host http://localhost:8099/categorias
-		//fromCurrentRequest() pega a URL que usamos para inserir nesse caso http://localhost:8099/categorias
-		//.path("/{id}" para o id a ser criado
-		//.buildAndExpand(obj.getId()) para atribuir o valor para ele
-		//.toUri() para converter para URI
-		//no return usamos o .created pois ele retorna o "201" que é o correto para essa aplicação
-		//basta pesquisar http status code que veremos uma lista com todos os códigos adequados
-		return ResponseEntity.created(uri).build();
+	return ResponseEntity.created(uri).build();
 	}
 	
 	//Método PUT - Altera o conteudo de uma ID 
 	
-	//Funciona como uma "mistura" do GET e POST, ele recebe o o objeto e o parametro no URL
+//	//Funciona como uma "mistura" do GET e POST, ele recebe o o objeto e o parametro no URL
+//	@PutMapping ("/{id}")
+//	public ResponseEntity<Void> update (@RequestBody Categoria obj , @PathVariable Integer id){
+//		obj.setId(id);
+//		obj = categoriaService.update(obj);
+//		return ResponseEntity.noContent().build();
+//	}
+	
+	//Com a mudança para o uso do DTO nosso código ficou assim:
+	
 	@PutMapping ("/{id}")
-	public ResponseEntity<Void> update (@RequestBody Categoria obj , @PathVariable Integer id){
+	public ResponseEntity<Void> update (@Valid @RequestBody CategoriaDTO objDto , @PathVariable Integer id){
+		Categoria obj = categoriaService.fromDTO(objDto);
 		obj.setId(id);
 		obj = categoriaService.update(obj);
 		return ResponseEntity.noContent().build();
@@ -113,7 +137,7 @@ public class CategoriaResource {
 			@RequestParam(value="page",defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage",defaultValue="24")Integer linesPerPage,
 			@RequestParam(value="orderBy",defaultValue="nome")String orderBy,
-			@RequestParam(value="direction",defaultValue="ASC")String direction) {
+			@RequestParam(value="direction",defaultValue="ASC")String direction) {//DESC para decrescente
 		Page<Categoria> list = categoriaService.findPage(page,linesPerPage,orderBy,direction);
 		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));
 		return ResponseEntity.ok().body(listDto);
