@@ -1,5 +1,6 @@
 package com.udemy.curso.springboot.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class CategoriaService {
 	private CategoriaRepository categoriaRepository;
 
 	// buscar para o ID (GET do controller)
-	
+
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = categoriaRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -28,46 +29,49 @@ public class CategoriaService {
 		// Além disso temos que mudar na camada de recurso para ela receber essa
 		// exceção, go to CategoriaResource
 	}
-	
-	//Método para salvar um novo objeto na Categoria, o POST no EndPoint.
-	
-	public Categoria insert (Categoria obj) {
+
+	// Método para salvar um novo objeto na Categoria, o POST no EndPoint.
+
+	public Categoria insert(Categoria obj) {
 		obj.setId(null);
-		//é null pois ele vai "buscar o primeiro id nulo para setar
-		//sem o null vai ser considerado uma atualização e não uma inserção
+		// é null pois ele vai "buscar o primeiro id nulo para setar
+		// sem o null vai ser considerado uma atualização e não uma inserção
 		return categoriaRepository.save(obj);
 	}
-	
-	//Método para alterar um objeto na Categoria, o PUT no EndPoint
-	
-	//O mesmo método de inserir/salvar, a diferença é  a ausencia 
-	//da linha "obj.setId(null); 
+
+	// Método para alterar um objeto na Categoria, o PUT no EndPoint
+
+	// O mesmo método de inserir/salvar, a diferença é a ausencia
+	// da linha "obj.setId(null);
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
-		//chamo find porque ele ja busca o objeto no
-		//banco e caso o Id não exista ele lança uma exceção
-		//esse métod esta no GET acima, só aproveitei ele!
+		// chamo find porque ele ja busca o objeto no
+		// banco e caso o Id não exista ele lança uma exceção
+		// esse métod esta no GET acima, só aproveitei ele!
 		return categoriaRepository.save(obj);
 	}
-	
-	//Método para deletar uma Categoria, o Delete no EndPoint
-	
-	
+
+	// Método para deletar uma Categoria, o Delete no EndPoint
+
 	public void delete(Integer id) {
 		find(id);
-		//Essa excecao (DataIntegrityViolationException) foi vista ao 
-		//relizar no postman um delete com uma categoria que ja possuia produtos
-		//tratamos ela com o try catch!
+		// Essa excecao (DataIntegrityViolationException) foi vista ao
+		// relizar no postman um delete com uma categoria que ja possuia produtos
+		// tratamos ela com o try catch!
 		try {
-	categoriaRepository.deleteById(id);// o return comum
+			categoriaRepository.deleteById(id);// o return comum
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos cadastrados!");
+			// vai lançar minha exception DataIntegrityException
+			// (foi criado no pacote com.udemy.curso.springboot.cursomc.services.exceptions)
+			// Feito isso temos que lançar na camada no ResourceExceptionHandler
+		}
+
 	}
-		catch(DataIntegrityViolationException e){ 
-		throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos!");
-		//vai lançar minha exception DataIntegrityException 
-		//(foi criado no pacote com.udemy.curso.springboot.cursomc.services.exceptions)
-		//Feito isso temos que lançar na camada no ResourceExceptionHandler
-	}
-		
+	// buscar todas as Categorias(GET do controller)
+
+	public List<Categoria> findAll() {
+		return categoriaRepository.findAll();
 	}
 
 }

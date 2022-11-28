@@ -10,15 +10,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.udemy.curso.springboot.cursomc.services.exceptions.DataIntegrityException;
 import com.udemy.curso.springboot.cursomc.services.exceptions.ObjectNotFoundException;
 
+//Tratamento de exception
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
+	//Para objeto não emcontrado:
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
 		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
 
+	//Para o uso no método DELETE (presente na CategoriaService e CategoriaResource):
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request) {
 		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());

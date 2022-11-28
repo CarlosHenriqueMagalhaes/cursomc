@@ -1,6 +1,8 @@
 package com.udemy.curso.springboot.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.udemy.curso.springboot.cursomc.domain.Categoria;
+import com.udemy.curso.springboot.cursomc.dto.CategoriaDTO;
 import com.udemy.curso.springboot.cursomc.services.CategoriaService;
 
 @RestController
@@ -68,5 +71,36 @@ public class CategoriaResource {
 	public ResponseEntity<Void> delete (@PathVariable Integer id){
 		categoriaService.delete(id);
 		return ResponseEntity.noContent().build();	
+	}
+	
+	// Médodo GET - devolve todas as cadegorias
+	
+//	@GetMapping
+//	public ResponseEntity<List<Categoria>> findAll() {
+//		List<Categoria> list = categoriaService.findAll();
+//		return ResponseEntity.ok().body(list);
+//	}
+		//Problema encontrado! com o método acima, ele traz além das Categorias,
+		//Todos os itens "penturados" nele, ou seja, todos os produtos,
+		//para evitar que isso aconteça usamos o DTO, que é um tipo de 
+		//projeção de dados
+	
+	@GetMapping
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		//Assim preciso converter um Lista de Categorias para CategoriaDTO
+		//Essa pratica é feita no DTO
+		List<Categoria> list = categoriaService.findAll();
+		//Assim percorro a lista e para cada elemento dessa lista (cod acima)
+		//Instancio o DTO correspondente (cod  abaixo)
+		List<CategoriaDTO> listDto = list.stream()
+				.map(obj -> new CategoriaDTO(obj))
+				.collect(Collectors.toList());
+        //.stream() percorre a lista
+		//.map(obj -> new CategoriaDTO(obj)) efetua uma operação para cada 
+		//elemento da lista apelidado aqui como obj , assim crio uma
+		//nova lista DTO passando "obj" como argumento
+		//.collect(Collectors.toList()); preciso voltar o stream para o
+		//tipo list por isso o Collectors.toList
+		return ResponseEntity.ok().body(listDto);
 	}
 }
