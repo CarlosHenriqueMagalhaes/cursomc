@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.udemy.curso.springboot.cursomc.domain.Categoria;
@@ -73,5 +76,20 @@ public class CategoriaService {
 	public List<Categoria> findAll() {
 		return categoriaRepository.findAll();
 	}
+
+	// Método paginação
+	
+	//Esse método é a listagem com paginação, o que acontece? Quando possuo uma
+	//quantidade muito grande de registro, se eu usar o GET ele trará todos
+	//os registros salvos! Assim terei um consumo grande de memória, processamento...
+	//Assim fazemos a paginação para buscar de maneira controlada esses objetos
+	//tipo de 20 em 20 , de 100 em 100, etc.
+
+	//O Page ira encapsular informações e operações sobre a paginação
+	public Page <Categoria> findPage (Integer page, Integer linesPerPage, String orderBy, String direction){
+//	PageRequest pageRequest = new PageRequest (page, linesPerPage,Direction.valueOf(direction),orderBy);
+    PageRequest pageRequest = PageRequest.of (page, linesPerPage,Direction.valueOf(direction),orderBy);
+    return categoriaRepository.findAll(pageRequest);
+}
 
 }
