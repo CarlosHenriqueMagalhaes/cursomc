@@ -61,7 +61,10 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo.getCod(); //  para o caso do ENUM
+		//this.tipo = tipo.getCod(); //  para o caso do ENUM
+		//Como usamos no put, para ele poder ser nulo, mudamos para o código:
+		this.tipo = (tipo==null) ? null : tipo.getCod();
+		//Esse cod quer dizer, se ele receber null ele vai escrever null
 	}
 	
 	//Acessores

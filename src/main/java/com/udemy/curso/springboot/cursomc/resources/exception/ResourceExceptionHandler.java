@@ -31,6 +31,7 @@ public class ResourceExceptionHandler {
 	}
 
 	//Para exception ao dar erro de validação 
+	//Fiz as classes auxiliares FieldMessage e ValidationError
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
 		ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro de validação", System.currentTimeMillis());
@@ -38,6 +39,13 @@ public class ResourceExceptionHandler {
 			err.addError(x.getField(),x.getDefaultMessage());
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+		
+		//for aqui: percorre a lista de erros que ja tem na exceção MethodArgumentNotValidException
+		//chamada "e" e para cada erro na listinha de erros dessa exceção MethodArgumentNotValidException
+		//ela gera o objeto FieldMessage ( e.getBindingResult e getFieldErrors) com isso acessamos
+		//todos erros de campos que aconteceram nessa exceção
+		//para cada fieldError x nessa lista eu vou fazer o objeto pegar o nome do campo
+		//e depois a mensagem (err.addError(x.getField(),x.getDefaultMessage());)
 	}
 	
 }

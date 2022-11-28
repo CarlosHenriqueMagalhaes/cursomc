@@ -5,6 +5,8 @@ import java.util.List;
 
 //Esse é uma classe auxiliar para o tratamento de exception referente 
 //a validação @ExceptionHandler(MethodArgumentNotValidException)
+//Essa é uma classe herda os dados de StandartError
+
 public class ValidationError extends StandardError {
 	private static final long serialVersionUID = 1L;
 

@@ -7,6 +7,8 @@ import java.io.Serializable;
 public class FieldMessage implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	//esses são os campos que quero exibir ao dar o erro...
+	//totalmente personalizado
 	private String fieldName;
 	private String message;
 	
