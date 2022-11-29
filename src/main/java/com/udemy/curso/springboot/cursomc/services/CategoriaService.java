@@ -45,15 +45,34 @@ public class CategoriaService {
 
 	// Método para alterar um objeto na Categoria, o PUT no EndPoint
 
-	// O mesmo método de inserir/salvar, a diferença é a ausencia
-	// da linha "obj.setId(null);
+//	// O mesmo método de inserir/salvar, a diferença é a ausencia
+//	// da linha "obj.setId(null);
+//	public Categoria update(Categoria obj) {
+//		find(obj.getId());
+//		// chamo find porque ele ja busca o objeto no
+//		// banco e caso o Id não exista ele lança uma exceção
+//		// esse métod esta no GET acima, só aproveitei ele!
+//		return categoriaRepository.save(obj);
+//	}
+	
+	//mudamos o método PUT para o mesmo padrão do Cliente:
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
+		Categoria newObj = find(obj.getId());
 		// chamo find porque ele ja busca o objeto no
 		// banco e caso o Id não exista ele lança uma exceção
 		// esse métod esta no GET acima, só aproveitei ele!
-		return categoriaRepository.save(obj);
+		//Preciso utilizar o método auxiliar abaixo para atualizar os dados
+		//desse newObj com base no obj que veio como argumento
+		updateData(newObj,obj);
+		return categoriaRepository.save(newObj);
 	}
+	
+	//Método auxiliar PUT
+	
+		private void updateData (Categoria newObj, Categoria obj) {
+			newObj.setNome(obj.getNome());
+		}
+	
 
 	// Método para deletar uma Categoria, o Delete no EndPoint
 
