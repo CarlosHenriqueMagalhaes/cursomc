@@ -8,7 +8,10 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.udemy.curso.springboot.cursomc.domain.Cliente;
+import com.udemy.curso.springboot.cursomc.services.validation.ClienteUpdate;
 
+//anotação @ClienteUpdate para o update de email
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

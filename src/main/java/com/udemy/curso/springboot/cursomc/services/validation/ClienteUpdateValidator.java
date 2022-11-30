@@ -1,0 +1,85 @@
+package com.udemy.curso.springboot.cursomc.services.validation;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
+
+import com.udemy.curso.springboot.cursomc.domain.Cliente;
+import com.udemy.curso.springboot.cursomc.dto.ClienteDTO;
+import com.udemy.curso.springboot.cursomc.repositories.ClienteRepository;
+import com.udemy.curso.springboot.cursomc.resources.exception.FieldMessage;
+
+//Classe Validador da Anotação:
+
+public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
+	
+	//A função HttpServletRequest que permite obter o parâmetro da URI!
+	@Autowired
+	private HttpServletRequest request;
+	
+	@Autowired
+	private ClienteRepository repo;
+
+	@Override
+	public void initialize(ClienteUpdate ann) {
+	// nesse campo vazio posso adicionar alguma configuração de inicialização, nesse
+	// caso não vai ser necessário
+	}
+
+	// isValid é um método da ConstraintValidator, que verifica se nosso tipo (o
+	// ClienteDTO) no caso se ele vai ser válido ou não!(ele retorna true
+	//  ou false por isso ele é um boolean!
+	
+	// Uma lista vazia é instanciada de objetos do tipo FieldMessage (verifique essa
+	// classe) que foi criada no resource exception para carregar o nome do 
+	// campo e a mensagem de erro desse campo
+	
+	@Override
+	public boolean isValid(ClienteDTO objDto, ConstraintValidatorContext context) {
+		//Pega um map de variaveis de URI que estão na requisição:
+		@SuppressWarnings("unchecked")
+		Map<String , String> map =(Map<String , String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+		Integer uriId = Integer.parseInt(map.get("id"));
+		
+		List<FieldMessage> list = new ArrayList<>();
+		
+		// inclua os testes aqui, inserindo erros na lista:
+		
+		//método para validação do e-mail ao usar update:
+		
+		//esse método serve para que se eu for alterar o email de um cliente, para um 
+		//email que ja tenha outro cliente cadastrado, exiba um erro e não cadastra
+		
+		Cliente aux = repo.findByEmail(objDto.getEmail());
+		if (aux != null && !aux.getId().equals(uriId)) {
+			list.add(new FieldMessage("email" ,"Email já existente"));
+		}
+		
+		//método da classe
+
+		for (FieldMessage e : list) {
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
+					.addConstraintViolation();
+		}
+		return list.isEmpty();
+		
+		// O método isValid retorna verdadeiro, porém se houver algum erro essa lista
+		// não vai estar vazia e o meu pétodo vai retornar Falso!
+		// O for: é para percorrer minha lista de FieldMessage e para cada objeto na
+		// minha lista, eu vou adicionar um erro correspondente em minha lista de
+		// erros do framework que são os comandos context.disableDefaultConstraintViolation
+		// e context.buildConstraintViolationWithTemplate, então esses dois comandos me
+		// permite transportar os meus erros personalizados para a lista de erros
+		// do framework.Essa lista do framework é tratada e mostrada na classe
+		// ResourceExceptionHandler no método MethodArgumentNotValidException
+		
+	}
+}

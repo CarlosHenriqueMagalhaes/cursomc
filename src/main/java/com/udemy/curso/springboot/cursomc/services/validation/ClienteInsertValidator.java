@@ -38,7 +38,7 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		List<FieldMessage> list = new ArrayList<>();
 		// Uma lista vazia é instanciada de objetos do tipo FieldMessage (verifique essa
 		// classe)
-		// que foi criada no resource exption para carregar o nome do campo e a mensagem
+		// que foi criada no resource exception para carregar o nome do campo e a mensagem
 		// de erro
 		// desse campo
 
