@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,7 @@ public class Cliente implements Serializable {
 
 	private String nome;
 	
+	@Column(unique = true)//essa anotação garante que esse campo não tera repetição
 	private String email;
 	
 	private String cpfOuCnpj;
