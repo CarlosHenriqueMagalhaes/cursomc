@@ -89,7 +89,7 @@ public class ClienteService {
 			clienteRepository.deleteById(id);// o return comum
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException(
-					"Não é possível excluir um cliente pois" + " ele possui entidades relacionadas!");
+					"Não é possível excluir um cliente pois ele possui pedidos relacionadas!");
 			// vai lançar minha exception DataIntegrityException
 			// (foi criado no pacote com.udemy.curso.springboot.cursomc.services.exceptions)
 			// Feito isso temos que lançar na camada no ResourceExceptionHandler

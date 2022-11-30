@@ -2,33 +2,65 @@ package com.udemy.curso.springboot.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.udemy.curso.springboot.cursomc.services.validation.ClienteInsert;
+
 // Nesse DTO inserimos um novo cliente (que deve ter um telefone e
 //um endereço e no endereço uma cidade (consulte o diagrama), assim
 //o sistema vai cadastrar o Cliente, o Endereco (com a Cidade) e o Telefone tudo junto!
 //Assim esse é um DTO especifico para enviar todos esses dados
+
+//anotação @ClienteInsert para o tipo CPF ou CNPJ vide abaixo
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Dados do Cliente:
 
+	@NotEmpty (message = "Preenchimento obrigatório")
+	@Length (min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
+	
+	@NotEmpty (message = "Preenchimento obrigatório")
+	@Email (message = "Email inválido")
 	private String email;
+	
+	@NotEmpty (message = "Preenchimento obrigatório")
+	//se fosse um campo especifico apenas para CPF ou CNPJ, bastaria
+	//adicionar a anotação @CPF e/ou @CNPJ para validar, porém esse
+	//campo depende do campo tipo! assim criamos uma anotação e os 
+	//métodos, presentes nas classes ClienteInsert, ClienteInsertValidator e BR
 	private String cpfOuCnpj;
+	
 	private Integer tipo;
 	// para o caso do ENUM vide construtores e acessores
 
 	// Dados do Endereco:
 
+	@NotEmpty (message = "Preenchimento obrigatório")
 	private String logradouro;
+	
+	@NotEmpty (message = "Preenchimento obrigatório")
 	private String numero;
+	
 	private String complemento;
+	
 	private String bairro;
+	
+	@NotEmpty (message = "Preenchimento obrigatório")
 	private String cep;
 
 	// Para o Telefone:
 
+	@NotEmpty (message = "Preenchimento obrigatório")
 	private String telefone1;
+	
 	private String telefone2;
+	
 	private String telefone3;
 	// o telefone2 e 3 são opcionais
 
@@ -76,16 +108,6 @@ public class ClienteNewDTO implements Serializable {
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
-	
-//	// Get para o caso do ENUM
-//	public TipoCliente getTipo() {
-//		return TipoCliente.toEnum(tipo);
-//	}
-//
-//	// Set para o caso do ENUM
-//	public void setTipo(TipoCliente tipo) {
-//		this.tipo = tipo.getCod();
-//	}
 
 	public String getLogradouro() {
 		return logradouro;
