@@ -48,6 +48,16 @@ public class Pedido implements Serializable {
 	// item repetido no mesmo pedido
 	@OneToMany (mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>();
+	
+	//Método para calcular o valor total do pedido
+	
+	public double getValorTotal() { //o get para o valor ser reconhecido pelo JSON e serializado
+		double soma = 0.0;
+		for (ItemPedido ip : itens) {
+			soma = soma + ip.getSubTotal();
+		}
+		return soma;
+		}
 
 	// Construtores
 

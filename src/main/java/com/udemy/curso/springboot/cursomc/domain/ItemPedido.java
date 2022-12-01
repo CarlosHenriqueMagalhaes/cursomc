@@ -21,7 +21,13 @@ public class ItemPedido implements Serializable {
 	private Integer quantidade;
 
 	private double preco;
-
+	
+	// Método Calcula o SubTotal
+		
+	public double getSubTotal() { //o get para o valor ser reconhecido pelo JSON e serializado
+		return (preco - desconto) * quantidade;
+	}
+	
 	// Construtores
 
 	public ItemPedido() {
@@ -83,6 +89,7 @@ public class ItemPedido implements Serializable {
 	public Produto getProduto() {
 		return id.getProduto();
 	}
+	
 
 	@Override
 	public int hashCode() {
