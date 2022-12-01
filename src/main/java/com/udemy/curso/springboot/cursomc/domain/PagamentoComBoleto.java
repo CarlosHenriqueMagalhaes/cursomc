@@ -5,9 +5,14 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.udemy.curso.springboot.cursomc.domain.enums.EstadoPagamento;
 
+
 @Entity
+//@JsonTypeInfo Checklist para permitir a instanciação de subclasses a partir de dados JSON:
+//Vide classe Pagamento
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	

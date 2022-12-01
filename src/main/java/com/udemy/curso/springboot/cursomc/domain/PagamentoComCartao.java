@@ -2,9 +2,13 @@ package com.udemy.curso.springboot.cursomc.domain;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.udemy.curso.springboot.cursomc.domain.enums.EstadoPagamento;
 
 @Entity
+//@JsonTypeInfo Checklist para permitir a instanciação de subclasses a partir de dados JSON:
+//Vide classe Pagamento
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	
