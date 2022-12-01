@@ -47,6 +47,9 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 		@SuppressWarnings("unchecked")
 		Map<String , String> map =(Map<String , String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 		Integer uriId = Integer.parseInt(map.get("id"));
+		// O HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) pega um map de variáveis da URI que estão na requisiçao
+		//resumindo o caminho que uso para acessar http://localhost:8099/clientes/2 ele pega a chave id que é o 2
+		//nesse exemplo. Integer.parseInt converte para Inteiro
 		
 		List<FieldMessage> list = new ArrayList<>();
 		
